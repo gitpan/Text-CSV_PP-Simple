@@ -1,41 +1,57 @@
-Text-CSV_PP-Simple version 0.0.1
+NAME
 
-[ REPLACE THIS...
+    Text::CSV_PP::Simple - Simpler parsing of CSV files [PP version]
 
-  The README is used to introduce the module and provide instructions on
-  how to install the module, any machine dependencies it may have (for
-  example C compilers and installed libraries) and any other information
-  that should be understood before the module is installed.
+SYNOPSIS
 
-  A README file is required for CPAN modules since CPAN extracts the
-  README file from a module distribution so that people browsing the
-  archive can use it get an idea of the modules uses. It is usually a
-  good idea to provide version information here so that people can
-  decide whether fixes for the module are worth downloading.
-]
+    use Text::CSV_PP::Simple;
+    my $parser = Text::CSV_PP::Simple->new;
+	my @data = $parser->read_file($datafile);
+	print @$_ foreach @data;
 
+	# Map the fields to a hash?
+	my $parser = Text::CSV_PP::Simple->new;
+	$parser->field_map(qw/id name null town/);
+	my @data = $parser->read_file($datafile);
 
-INSTALLATION
+DESCRIPTION
 
-To install this module, run the following commands:
+    Text::CSV_PP::Simple simply provide a little wrapper around Text::CSV_PP to streamline the
+    common case scenario.
 
-	perl Makefile.PL
-	make
-	make test
-	make install
+METHODS
 
-Alternatively, to install with Module::Build, you can use the following commands:
+    new
 
-	perl Build.PL
-	./Build
-	./Build test
-	./Build install
+        my $parser = Text::CSV_PP::Simple->new(\%options);
 
+        Construct a new parser. This takes all the same options as Text::CSV_PP.
 
-DEPENDENCIES
+    field_map
 
-None.
+    	$parser->field_map(qw/id name null town null postcode/);
 
+        Rather than getting back a listref for each entry in your CSV file, you
+        often want a hash of data with meaningful names. If you set up a field_map
+        giving the name you'd like for each field, then we do the right thing
+        for you! Fields named 'null' vanish into the ether.
+
+    read_file
+
+	    my @data = $parser->read_file($filename);
+
+        Read the data in the given file, parse it, and return it as a list of
+        data.
+
+        Each entry in the returned list will be a listref of parsed CSV data.
+
+AUTHOR
+
+    Kota Sakoda  C<< <cohtan@cpan.org> >>
+
+SEE ALSO
+
+    Text::CSV_XS, Text::CSV_PP, Text::CSV::Simple
 
 COPYRIGHT AND LICENCE
 
