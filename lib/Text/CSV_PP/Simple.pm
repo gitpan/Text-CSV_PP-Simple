@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.2');
+use version; our $VERSION = qv('0.0.3');
 
 use Text::CSV_PP;
 use IO::File;
@@ -48,10 +48,9 @@ __END__
 
 Text::CSV_PP::Simple - Simpler parsing of CSV files [PP version]
 
-
 =head1 VERSION
 
-This document describes Text::CSV_PP::Simple version 0.0.2
+This document describes Text::CSV_PP::Simple version 0.0.3
 
 =head1 SYNOPSIS
 
