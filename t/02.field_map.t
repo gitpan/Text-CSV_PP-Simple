@@ -18,5 +18,3 @@ ok ($data[2]->{"id"} eq '03');
 ok ($data[2]->{"name"} eq 'powe');
 ok ($data[2]->{"number"} eq '9482');
 
-
-

@@ -7,4 +7,5 @@ lib/Text/CSV_PP/Simple.pm
 t/00.load.t
 t/01.simple.t
 t/02.field_map.t
+t/03.want_field.t
 t/test.csv

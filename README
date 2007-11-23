@@ -9,6 +9,11 @@ SYNOPSIS
     my @data = $parser->read_file($datafile);
     print @$_ foreach @data;
 
+    # Only want certain fields?
+    my $parser = Text::CSV::Simple‐>new;
+    $parser‐>want_fields(1, 2, 4, 8);
+    my @data = $parser‐>read_file($datafile);
+
     # Map the fields to a hash?
     my $parser = Text::CSV_PP::Simple->new;
     $parser->field_map(qw/id name null town/);
@@ -29,16 +34,27 @@ METHODS
 
     field_map
 
-    	$parser->field_map(qw/id name null town null postcode/);
+        $parser->field_map(qw/id name null town null postcode/);
 
         Rather than getting back a listref for each entry in your CSV file, you
         often want a hash of data with meaningful names. If you set up a field_map
         giving the name you'd like for each field, then we do the right thing
         for you! Fields named 'null' vanish into the ether.
 
+    want_fields
+
+        $parser‐>want_fields(1, 2, 4, 8);
+
+        If you only want to extract certain fields from the CSV, you can set up
+        the list of fields you want, and, hey presto, those are the only ones
+        that will be returned in each listref. The fields, as with Perl arrays,
+        are zero based (i.e. the above example returns the second, third, fifth
+        and ninth entries for each line)
+
+
     read_file
 
-	    my @data = $parser->read_file($filename);
+        my @data = $parser->read_file($filename);
 
         Read the data in the given file, parse it, and return it as a list of
         data.

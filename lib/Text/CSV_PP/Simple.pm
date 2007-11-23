@@ -4,14 +4,14 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.3');
+use version; our $VERSION = qv('0.0.4');
 
 use Text::CSV_PP;
 use IO::File;
 
 sub new {
-	my $class = shift;
-	return bless { _parser => Text::CSV_PP->new(@_), } => $class;
+    my $class = shift;
+    return bless { _parser => Text::CSV_PP->new(@_), } => $class;
 }
 
 sub field_map {
@@ -22,6 +22,14 @@ sub field_map {
     return @{ $self->{_map} || [] };
 }
 
+sub want_fields {
+    my $self = shift;
+    if (@_) {
+        $self->{_wanted} = [@_];
+    }
+    return @{ $self->{_wanted} || [] };
+}
+
 sub read_file {
     my ($self, $file) = @_;
     
@@ -30,6 +38,13 @@ sub read_file {
     my $fh = IO::File->new($file, 'r') or croak $!;
     while (not $fh->eof) {
         my $cells = $csv->getline($fh);
+        if (my @wanted = $self->want_fields){
+            @{$cells} = @{$cells}[@wanted];
+        }
+        use Data::Dumper;
+        print Dumper $cells;
+        
+        
         my $addition = $cells;
         if (my @map = $self->field_map ){
             my $hash = { map { $_ => shift @{$cells} } @map };
@@ -50,19 +65,24 @@ Text::CSV_PP::Simple - Simpler parsing of CSV files [PP version]
 
 =head1 VERSION
 
-This document describes Text::CSV_PP::Simple version 0.0.3
+This document describes Text::CSV_PP::Simple version 0.0.4
 
 =head1 SYNOPSIS
 
     use Text::CSV_PP::Simple;
     my $parser = Text::CSV_PP::Simple->new;
-	my @data = $parser->read_file($datafile);
-	print @$_ foreach @data;
+    my @data = $parser->read_file($datafile);
+    print @$_ foreach @data;
 
-	# Map the fields to a hash?
-	my $parser = Text::CSV_PP::Simple->new;
-	$parser->field_map(qw/id name null town/);
-	my @data = $parser->read_file($datafile);
+    # Only want certain fields?
+    my $parser = Text::CSV::Simple‐>new;
+    $parser‐>want_fields(1, 2, 4, 8);
+    my @data = $parser‐>read_file($datafile);
+
+    # Map the fields to a hash?
+    my $parser = Text::CSV_PP::Simple->new;
+    $parser->field_map(qw/id name null town/);
+    my @data = $parser->read_file($datafile);
 
 =head1 DESCRIPTION
 
@@ -79,16 +99,26 @@ Construct a new parser. This takes all the same options as Text::CSV_PP.
 
 =head2 field_map
 
-	$parser->field_map(qw/id name null town null postcode/);
+    $parser->field_map(qw/id name null town null postcode/);
 
 Rather than getting back a listref for each entry in your CSV file, you
 often want a hash of data with meaningful names. If you set up a field_map
 giving the name you'd like for each field, then we do the right thing
 for you! Fields named 'null' vanish into the ether.
 
+=head2 want_fields
+
+    $parser‐>want_fields(1, 2, 4, 8);
+
+If you only want to extract certain fields from the CSV, you can set up
+the list of fields you want, and, hey presto, those are the only ones
+that will be returned in each listref. The fields, as with Perl arrays,
+are zero based (i.e. the above example returns the second, third, fifth
+and ninth entries for each line)
+
 =head2 read_file
 
-	my @data = $parser->read_file($filename);
+    my @data = $parser->read_file($filename);
 
 Read the data in the given file, parse it, and return it as a list of
 data.
