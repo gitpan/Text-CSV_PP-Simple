@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.4');
+use version; our $VERSION = qv('0.0.5');
 
 use Text::CSV_PP;
 use IO::File;
@@ -65,7 +65,7 @@ Text::CSV_PP::Simple - Simpler parsing of CSV files [PP version]
 
 =head1 VERSION
 
-This document describes Text::CSV_PP::Simple version 0.0.4
+This document describes Text::CSV_PP::Simple version 0.0.5
 
 =head1 SYNOPSIS
 
@@ -75,9 +75,9 @@ This document describes Text::CSV_PP::Simple version 0.0.4
     print @$_ foreach @data;
 
     # Only want certain fields?
-    my $parser = Text::CSV::Simple‐>new;
-    $parser‐>want_fields(1, 2, 4, 8);
-    my @data = $parser‐>read_file($datafile);
+    my $parser = Text::CSV::Simple->new;
+    $parser->want_fields(1, 2, 4, 8);
+    my @data = $parser->read_file($datafile);
 
     # Map the fields to a hash?
     my $parser = Text::CSV_PP::Simple->new;
@@ -108,7 +108,7 @@ for you! Fields named 'null' vanish into the ether.
 
 =head2 want_fields
 
-    $parser‐>want_fields(1, 2, 4, 8);
+    $parser->want_fields(1, 2, 4, 8);
 
 If you only want to extract certain fields from the CSV, you can set up
 the list of fields you want, and, hey presto, those are the only ones

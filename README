@@ -10,9 +10,9 @@ SYNOPSIS
     print @$_ foreach @data;
 
     # Only want certain fields?
-    my $parser = Text::CSV::Simple‐>new;
-    $parser‐>want_fields(1, 2, 4, 8);
-    my @data = $parser‐>read_file($datafile);
+    my $parser = Text::CSV::Simple->new;
+    $parser->want_fields(1, 2, 4, 8);
+    my @data = $parser->read_file($datafile);
 
     # Map the fields to a hash?
     my $parser = Text::CSV_PP::Simple->new;
@@ -43,7 +43,7 @@ METHODS
 
     want_fields
 
-        $parser‐>want_fields(1, 2, 4, 8);
+        $parser->want_fields(1, 2, 4, 8);
 
         If you only want to extract certain fields from the CSV, you can set up
         the list of fields you want, and, hey presto, those are the only ones
